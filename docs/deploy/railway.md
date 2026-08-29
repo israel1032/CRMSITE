@@ -68,6 +68,8 @@ Set these on the **app** service in Railway (Settings → Variables). Values mar
 | `NEXTAUTH_URL` | Your Railway app's public URL, e.g. `https://your-app.railway.app` |
 | `NEXT_PUBLIC_APP_URL` | Same value as `NEXTAUTH_URL`. |
 | `NEXT_PUBLIC_SITE_URL` | Same value as `NEXTAUTH_URL`. |
+| `AUTH_TRUST_HOST` | Set to `true` so Auth.js trusts Railway's forwarded host. |
+| `NEXT_PUBLIC_APP_HOSTS` | Only needed when attaching a custom domain: its hostname, without scheme or path. Native `*.railway.app` hosts already work. |
 | `PORTAL_KMS_KEY` | AES-GCM key for plugin signing-key encryption. **Generate:** `openssl rand -base64 32` |
 | `WORKSPACE_TENANT_SECRETS_KEY` | Google Workspace credential encryption key. **Generate:** `openssl rand -base64 32` |
 | `ENCRYPTION_KEY` | AES-256-GCM key for stored integration API keys (32 bytes = 64 hex chars). **Generate:** `openssl rand -hex 32` |

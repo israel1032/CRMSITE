@@ -154,10 +154,17 @@ stay dormant until you configure them. The minimum to start:
 | `DATABASE_URL` | Postgres (with pgvector) connection string | — |
 | `AUTH_SECRET` / `NEXTAUTH_SECRET` | NextAuth session secret | `openssl rand -hex 32` |
 | `NEXTAUTH_URL` / `NEXT_PUBLIC_APP_URL` | Base URL, e.g. `http://localhost:3000` | — |
+| `AUTH_TRUST_HOST` | Set to `true` on a production self-host behind a reverse proxy so Auth.js accepts the forwarded host | — |
+| `NEXT_PUBLIC_APP_HOSTS` | Comma-separated app hostnames for custom domains, e.g. `app.example.com` (build-time) | — |
 | `WORKSPACE_TENANT_SECRETS_KEY` | 32-byte hex — encrypts per-tenant BYOK secrets | `openssl rand -hex 32` |
 | `PORTAL_KMS_KEY` | Base64 key for plugin JWT signing | `openssl rand -base64 32` |
 | `OAUTH_STATE_SECRET` | OAuth state signing | `openssl rand -hex 32` |
 | `ENCRYPTION_KEY` | 64 hex chars — encrypts stored integration API keys (the integrations route 500s without it) | `openssl rand -hex 32` |
+
+For an intentionally plain-HTTP production origin, set
+`AUTH_INSECURE_COOKIES=1`; this sends session cookies without the `Secure` flag
+and must never be used on HTTPS. Internal HTTP between a TLS reverse proxy and
+the app does not require this flag because the browser-facing origin is HTTPS.
 
 Add integration keys (`ANTHROPIC_API_KEY`, `OPENAI_API_KEY`, `STRIPE_SECRET_KEY`,
 …) as you turn each feature on. **`.env.example` is the canonical annotated

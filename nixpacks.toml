@@ -1,5 +1,5 @@
 [phases.install]
-cmds = ["npm install --legacy-peer-deps --workspaces=false --package-lock=false --no-audit --no-fund"]
+cmds = ["npm install --global bun@1.3.11", "bun install --frozen-lockfile"]
 
 [phases.build]
 cmds = ["bun run build"]

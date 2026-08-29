@@ -131,6 +131,10 @@ export const products = pgTable('products', {
   // When true, this product is opened in the custom designer (see
   // lib/db/schema/productDesigner.ts). Storefront/admin checks this to flip
   // the "Design it" CTA on and gate productStyles/productSides reads.
+  // `is_designable` predates this field and remains in the baseline/live DB.
+  // Declare it as retained compatibility state so Drizzle never proposes a
+  // destructive drop; current code must keep reading `designable`. SHDB-002.
+  isDesignable: boolean('is_designable').default(false).notNull(),
   designable: boolean('designable').default(false).notNull(),
   createdAt: timestamp('created_at').defaultNow().notNull(),
   updatedAt: timestamp('updated_at').defaultNow().notNull(),

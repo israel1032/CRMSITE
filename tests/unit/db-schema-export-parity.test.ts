@@ -451,6 +451,9 @@ const EXPECTED_EXPORTS: readonly string[] = [
   'kanbanCards',
   'kanbanColumns',
   'kanbanLabels',
+  'legacyDesignAssets',
+  'legacyDesigns',
+  'legacyProductDesignSurfaces',
   'linkedinPosts',
   'linkedinUserConnections',
   'magamommyBriefs',
@@ -779,6 +782,9 @@ const EXPECTED_TABLE_NAMES: Readonly<Record<string, string>> = {
   kanbanCards: 'kanban_cards',
   kanbanColumns: 'kanban_columns',
   kanbanLabels: 'kanban_labels',
+  legacyDesignAssets: 'design_assets',
+  legacyDesigns: 'designs',
+  legacyProductDesignSurfaces: 'product_design_surfaces',
   linkedinPosts: 'linkedin_posts',
   linkedinUserConnections: 'linkedin_user_connections',
   magamommyBriefs: 'magamommy_briefs',
@@ -959,6 +965,6 @@ describe('lib/db/schema export parity', () => {
       if (value && typeof value === 'object' && isTable(value)) count += 1;
     }
     expect(count).toBe(Object.keys(EXPECTED_TABLE_NAMES).length);
-    expect(count).toBe(312);
+    expect(count).toBe(315);
   });
 });

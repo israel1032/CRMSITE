@@ -57,6 +57,7 @@
     "db:verify-target": "bun scripts/verify-db-target.ts",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "bun run db:verify-target && drizzle-kit migrate",
+    "db:check-migration-drift": "bun scripts/check-migration-schema-drift.ts",
     "db:push": "bun run db:verify-target && drizzle-kit push",
     "db:studio": "drizzle-kit studio",
     "db:seed": "bun scripts/seed-admin.ts",

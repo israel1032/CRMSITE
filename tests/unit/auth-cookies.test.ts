@@ -21,10 +21,16 @@ function env(vars: Record<string, string | undefined>) {
 
 beforeEach(() => {
   __resetSecureCookieWarning();
-  env({ NODE_ENV: undefined, AUTH_INSECURE_COOKIES: undefined, VERCEL_ENV: undefined });
+  env({
+    NODE_ENV: undefined,
+    AUTH_INSECURE_COOKIES: undefined,
+    VERCEL_ENV: undefined,
+    AUTH_URL: undefined,
+    NEXTAUTH_URL: undefined,
+  });
 });
 afterEach(() => {
-  for (const k of ['NODE_ENV', 'AUTH_INSECURE_COOKIES', 'VERCEL_ENV']) {
+  for (const k of ['NODE_ENV', 'AUTH_INSECURE_COOKIES', 'VERCEL_ENV', 'AUTH_URL', 'NEXTAUTH_URL']) {
     if (saved[k] === undefined) delete (process.env as Record<string, string | undefined>)[k];
     else (process.env as Record<string, string>)[k] = saved[k] as string;
   }
@@ -75,6 +81,29 @@ describe('secureCookiesEnabled', () => {
     secureCookiesEnabled();
     secureCookiesEnabled();
     expect(spy).toHaveBeenCalledOnce();
+    spy.mockRestore();
+  });
+
+  it('logs once when production Secure cookies target a public HTTP origin', () => {
+    const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    env({ NODE_ENV: 'production', NEXTAUTH_URL: 'http://self-host.example.test' });
+    secureCookiesEnabled();
+    secureCookiesEnabled();
+    expect(spy).toHaveBeenCalledOnce();
+    expect(spy.mock.calls[0][0]).toContain('auth.secure_cookie_on_insecure_origin');
+    spy.mockRestore();
+  });
+
+  it('does not warn for HTTPS or when insecure cookies were explicitly enabled', () => {
+    const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    env({ NODE_ENV: 'production', NEXTAUTH_URL: 'https://self-host.example.test' });
+    expect(secureCookiesEnabled()).toBe(true);
+    env({
+      NEXTAUTH_URL: 'http://self-host.example.test',
+      AUTH_INSECURE_COOKIES: '1',
+    });
+    expect(secureCookiesEnabled()).toBe(false);
+    expect(spy).not.toHaveBeenCalled();
     spy.mockRestore();
   });
 });
